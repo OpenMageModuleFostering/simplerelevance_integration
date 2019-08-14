@@ -1,0 +1,8 @@
+ul.tabs a.simplerelevance-section:hover { background-color:#D8E6E6; }
+ul.tabs a.simplerelevance-section,
+ul.tabs a.simplerelevance-section:hover {border-bottom:none; padding:0.5em 0.5em 0 1.5em;}
+ul.tabs a.simplerelevance-section span,
+ul.tabs a.simplerelevance-section:hover span { background:url(images/box-tab.png) no-repeat 0 0; overflow:hidden; padding-left:35px; width:120px; height:22px;}
+ul.tabs a.simplerelevance-section.active, ul.tabs a.simplerelevance-section.active:hover {background-color: white;border-bottom: 1px solid #BEBEBE;}
+
+h3.simplerelevance-header { background:url(images/simplerelevance-header.png) no-repeat 0 0; height: 52px; overflow:hidden; padding:0; width:345px; text-indent:-9999px; }

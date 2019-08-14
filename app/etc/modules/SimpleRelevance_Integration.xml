@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <SimpleRelevance_Integration>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mage_Sales />
+                <Mage_Customer />
+                <Mage_Catalog />
+            </depends>
+        </SimpleRelevance_Integration>
+    </modules>
+</config>

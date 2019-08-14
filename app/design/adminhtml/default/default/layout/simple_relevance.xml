@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<layout>
+
+	<adminhtml_system_config_edit>
+		<reference name="head">
+			<action method="addCss">
+				<stylesheet>simple_relevance/css.css</stylesheet>
+			</action>
+			<action method="addItem">
+				<type>skin_js</type>
+				<name>simple_relevance/js.js</name>
+			</action>
+		</reference>
+	</adminhtml_system_config_edit>
+
+</layout>

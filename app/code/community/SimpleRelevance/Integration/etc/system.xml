@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <simple_relevance translate="label" module="simple_relevance">
+            <class>simplerelevance-section</class>
+            <label>SimpleRelevance</label>
+            <header_css>simplerelevance-header</header_css>
+            <tab>customer</tab>
+            <sort_order>606</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general translate="label comment">
+                    <label>SimpleRelevance Integration</label>
+                    <frontend_type>text</frontend_type>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <sitename translate="label comment">
+                            <label>Site Name</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Your SimpleRelevance site name.<br />You can find it on your SimpleRelevance dashboard under <i>Account -> Site name</i>]]></comment>
+                        </sitename>
+                        <apikey translate="label comment">
+                            <label>API Key</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Your SimpleRelevance API Key.<br />You can find it on your SimpleRelevance dashboard under <i>Account -> API Key</i>]]></comment>
+                        </apikey>
+                        <debug translate="label comment">
+                            <label>Debug Mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[If enabled will log ALL API calls to <i>MAGENTO_ROOT/var/log/SimpleRelevance_Integration.log</i>]]></comment>
+                        </debug>
+                    </fields>
+                </general>
+            </groups>
+        </simple_relevance>
+    </sections>
+</config>

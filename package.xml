@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<package>
+    <name>SimpleRelevance_Integration</name>
+    <version>1.5.1</version>
+    <stability>stable</stability>
+    <license uri="http://www.opensource.org/licenses/osl-3.0.php">OSL v3.0</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>SimpleRelevance integration module</summary>
+    <description>Featuring customers, products and orders.</description>
+    <notes>-- version 1.5.1&#xD;
+      Updated for wider Magento support&#xD;
+&#xD;
+-- version 1.5.0&#xD;
+      Updated for our new API with SSL&#xD;
+&#xD;
+-- version 1.0.4&#xD;
+      Security Update&#xD;
+&#xD;
+-- version 1.0.3&#xD;
+       what 1.0.2 should be&#xD;
+&#xD;
+-- version 1.0.2&#xD;
+       better url support&#xD;
+&#xD;
+-- version 1.0.1&#xD;
+       Making all request async by default&#xD;
+&#xD;
+-- version 1.0.0&#xD;
+       Rename of dict parameter on inventory items&#xD;
+&#xD;
+-- version 0.0.9&#xD;
+       Category IDS names instead of integers when sending inventory items&#xD;
+&#xD;
+-- version 0.0.8&#xD;
+       Allowing to send ALL products and customers on each save&#xD;
+&#xD;
+-- version 0.0.7&#xD;
+       Bug fix on auto submit products and users on Magento 1.6.2.0&#xD;
+&#xD;
+-- version 0.0.6&#xD;
+       Correcting but on orders export (timestamp)&#xD;
+&#xD;
+-- version 0.0.5&#xD;
+       Automatic Customer and Product submission&#xD;
+&#xD;
+-- version 0.0.4&#xD;
+       Bug fixes, new data on product import, debug facility&#xD;
+&#xD;
+-- version 0.0.1&#xD;
+       First release</notes>
+    <authors><author><name>SimpleRelevance DEV team</name><user>simplerelevance</user><email>info@simplerelevance.com</email></author></authors>
+    <date>2013-09-09</date>
+    <time>20:33:32</time>
+    <contents><target name="magecommunity"><dir name="SimpleRelevance"><dir name="Integration"><dir name="Helper"><file name="Data.php" hash="d7c238082d54ce8aabc291b0ffab862c"/></dir><dir name="Model"><file name="Api.php" hash="7f666e0591fcdd3b78758cfbe33b6cea"/><file name="Observer.php" hash="8d35a597184cf902c2a6c859d3286c00"/><file name="Purchase.php" hash="3b657564042c912e89488ff0d29c3091"/></dir><dir name="controllers"><dir name="Adminhtml"><file name="ExportController.php" hash="ef9863bba66c9b2ba088553fa4725a65"/></dir></dir><dir name="etc"><file name="adminhtml.xml" hash="18e9829f6252920f6bf01a5340377b3a"/><file name="config.xml" hash="3ba8219cb93dba44fb1a1e7bcfadcd49"/><file name="system.xml" hash="d94f64025adb391d15393943482834ed"/></dir></dir></dir></target><target name="magedesign"><dir name="adminhtml"><dir name="default"><dir name="default"><dir name="layout"><file name="simple_relevance.xml" hash="f0d73f30b7aeff70f63b295327ac906c"/></dir><dir name="simple_relevance"><file name="css.css" hash="c354dd9c0e48bdb99089b1756058efc1"/><dir name="images"><file name="box-tab.png" hash="208977131fcbe078f10af53295ac686c"/><file name="simplerelevance-header.png" hash="c25099645618a32b8fdb8d4d7786cf2c"/></dir><file name="js.js" hash="5831e6e503ebd86f93e07230b56a6d2f"/></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="SimpleRelevance_Integration.xml" hash="0edc0425053fc8bb7dd3dde28b651a53"/></dir></target><target name="magelocale"><dir name="en_US"><file name="SimpleRelevance_Integration.csv" hash="62ea0be4e1c074ee5d975c0dc4a8dc77"/></dir></target></contents>
+    <compatible/>
+    <dependencies><required><php><min>5.2.0</min><max>6.0.0</max></php></required></dependencies>
+</package>
