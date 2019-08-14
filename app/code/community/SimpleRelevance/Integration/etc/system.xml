@@ -34,7 +34,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <comment><![CDATA[Your SimpleRelevance site name.<br />You can find it on your SimpleRelevance dashboard under <i>Account -> Site name</i>]]></comment>
+                            <comment><![CDATA[Your SimpleRelevance site name.<br />You can find it on your SimpleRelevance dashboard under <i>My Account -> Site Name</i>]]></comment>
                         </sitename>
                         <apikey translate="label comment">
                             <label>API Key</label>
@@ -43,7 +43,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <comment><![CDATA[Your SimpleRelevance API Key.<br />You can find it on your SimpleRelevance dashboard under <i>Account -> API Key</i>]]></comment>
+                            <comment><![CDATA[Your SimpleRelevance API Key.<br />You can find it on your SimpleRelevance dashboard under <i>My Account -> API Key</i>]]></comment>
                         </apikey>
                         <debug translate="label comment">
                             <label>Debug Mode</label>

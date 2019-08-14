@@ -38,6 +38,14 @@
 	               </simplerelevance_push_item>
 	         	</observers>
 	        </catalog_product_save_after>
+            <sales_order_save_after>
+                <observers>
+                    <simplerelevance_push_purchase>
+                        <class>simple_relevance/observer</class>
+                        <method>pushPurchase</method>
+                    </simplerelevance_push_purchase>
+                </observers>
+            </sales_order_save_after>
         </events>
     </global>
     <frontend>

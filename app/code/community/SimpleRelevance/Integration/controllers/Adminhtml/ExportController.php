@@ -16,46 +16,38 @@ class SimpleRelevance_Integration_Adminhtml_ExportController extends Mage_Adminh
     public function massCustomerAction()
     {
         try {
-            $customers = $this->getRequest()->getPost('customer', array());
-            $sent      = 0;
-            $notSent   = 0;
-
             $api_arr = array(Mage::helper('simple_relevance')->config('apikey'), Mage::helper('simple_relevance')->config('sitename'));
             $api = Mage::getModel('simple_relevance/api', $api_arr);
+            $customers = $this->getRequest()->getPost('customer', array());
+            $customerArray = array();
 
             foreach ($customers as $customerId) {
                 $customer = Mage::getModel('customer/customer')->load($customerId);
 
                 $customerData = array(
-                    'email' => $customer->getEmail(),
+                    'email' => $customer->getData('email'),
                     'user_id' => $customer->getId(),
                 );
 
-                $result = $api->postUsers($customerData);
-
-                if (!$api->errorCode) {
-                    $sent++;
-                } else {
-                    $this->_getSession()->addError($this->__('Error on customer #%s, - %s -', $customer->getId(), $api->errorMessage));
-                    $notSent++;
-                }
+                $customerArray[] = $customerData; // append
             }
 
-            if ($notSent) {
-                if ($sent) {
-                    $this->_getSession()->addError($this->__('%s customer(s) were not sent.', $notSent));
-                } else {
-                    $this->_getSession()->addError($this->__('No customer(s) were sent successfully.'));
-                }
-            }
+            $result = $api->postUsers($customerArray, true);
 
-            if ($sent) {
-                $this->_getSession()->addSuccess($this->__('%s customer(s) have been sent successfully.', $sent));
+            if ($api->errorCode) {
+                $this->_getSession()->addError($this->__('Error uploading customer(s) to SimpleRelevance. Email support@simplerelevance.com to let us know.'));
+            } else {
+                $this->_getSession()->addSuccess($this->__('Customer(s) have been uploaded to SimpleRelevance.'));
             }
         }
 
         catch (Exception $e) {
-            $api->_log($e->getMessage());
+            try {
+                $api->_log($e->getMessage());
+            }
+            catch (Exception $e) {
+                // do nothing
+            }
             $this->_redirect('adminhtml/customer/index');
         }
 
@@ -69,16 +61,13 @@ class SimpleRelevance_Integration_Adminhtml_ExportController extends Mage_Adminh
     public function massInventoryAction()
     {
         try {
-            $products = $this->getRequest()->getPost('product', array());
-            $sent     = 0;
-            $notSent  = 0;
-
             $api_arr = array(Mage::helper('simple_relevance')->config('apikey'), Mage::helper('simple_relevance')->config('sitename'));
             $api = Mage::getModel('simple_relevance/api', $api_arr);
+            $products = $this->getRequest()->getPost('product', array());
+            $productArray = array();
 
             foreach ($products as $productId) {
                 $product = Mage::getModel('catalog/product')->load($productId);
-
                 $dict = Mage::helper('simple_relevance')->getProductDict($product);
 
                 // categories should be a string of ';'-separated values
@@ -91,35 +80,31 @@ class SimpleRelevance_Integration_Adminhtml_ExportController extends Mage_Adminh
                 $dict['categories'] = $category_str;
 
                 $data = array(
-                    'item_name' => $product->getName(),
+                    'item_name' => $product->getData('name'),
                     'item_id'   => $product->getId(),
                     'data_dict' => $dict,
                 );
 
-                $result = $api->postItems($data);
-
-                if (!$api->errorCode) {
-                    $sent++;
-                } else {
-                    $this->_getSession()->addError($this->__('Error on items #%s, - %s -', $product->getId(), $api->errorMessage));
-                    $notSent++;
-                }
-            }
-            if ($notSent) {
-                if ($sent) {
-                    $this->_getSession()->addError($this->__('%s item(s) were not sent.', $notSent));
-                } else {
-                    $this->_getSession()->addError($this->__('No item(s) were sent successfully.'));
-                }
+                $productArray[] = $data;
             }
 
-            if ($sent) {
-                $this->_getSession()->addSuccess($this->__('%s item(s) have been sent successfully.', $sent));
+            $result = $api->postItems($productArray, true);
+
+            if ($api->errorCode) {
+                $this->_getSession()->addError($this->__('Error uploading item(s) to SimpleRelevance. Email support@simplerelevance.com to let us know.'));
+            } else {
+                $this->_getSession()->addSuccess($this->__('Item(s) have been uploaded to SimpleRelevance.'));
             }
         }
 
         catch (Exception $e) {
-            $api->_log($e->getMessage());
+            try {
+                $api->_log($e->getMessage());
+                $this->_getSession()->addError($this->__('No item(s) were uploaded to SimpleRelevance.'));
+            }
+            catch (Exception $e) {
+                // do nothing
+            }
             $this->_redirect('adminhtml/catalog_product/index');
         }
 
@@ -133,12 +118,10 @@ class SimpleRelevance_Integration_Adminhtml_ExportController extends Mage_Adminh
     public function massOrderAction()
     {
         try {
-            $orders  = $this->getRequest()->getPost('order_ids', array());
-            $sent    = 0;
-            $notSent = 0;
-
             $api_arr = array(Mage::helper('simple_relevance')->config('apikey'), Mage::helper('simple_relevance')->config('sitename'));
             $api = Mage::getModel('simple_relevance/api', $api_arr);
+            $orders = $this->getRequest()->getPost('order_ids', array());
+            $orderArray = array();
 
             foreach ($orders as $orderId) {
                 $order = Mage::getModel('sales/order')->load($orderId);
@@ -151,32 +134,25 @@ class SimpleRelevance_Integration_Adminhtml_ExportController extends Mage_Adminh
                 $postData = $purchase->getPostData();
 
                 foreach($postData['items'] as $p) {
-                    $result = $api->postPurchases($p);
-                }
-
-                if (!$api->errorCode) {
-                    $sent++;
-                } else {
-                    $this->_getSession()->addError($this->__('Error on order #%s, - %s -', $order->getId(), $api->errorMessage));
-                    $notSent++;
+                    $orderArray[] = $p;
                 }
             }
+            $result = $api->postPurchases($orderArray, true);
 
-            if ($notSent) {
-                if ($sent) {
-                    $this->_getSession()->addError($this->__('%s order(s) were not sent.', $notSent));
-                } else {
-                    $this->_getSession()->addError($this->__('No order(s) were sent successfully.'));
-                }
-            }
-
-            if ($sent) {
-                $this->_getSession()->addSuccess($this->__('%s order(s) have been sent successfully.', $sent));
+            if ($api->errorCode) {
+                $this->_getSession()->addError($this->__('Error uploading purchases(s) to SimpleRelevance. Email support@simplerelevance.com to let us know.'));
+            } else {
+                $this->_getSession()->addSuccess($this->__('Purchases(s) have been uploaded to SimpleRelevance.'));
             }
         }
 
         catch (Exception $e) {
-            $api->_log($e->getMessage());
+            try {
+                $api->_log($e->getMessage());
+            }
+            catch (Exception $e) {
+                // do nothing
+            }
             $this->_redirect('adminhtml/sales_order/index');
         }
 

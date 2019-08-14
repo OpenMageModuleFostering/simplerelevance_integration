@@ -16,12 +16,12 @@ class SimpleRelevance_Integration_Model_Observer
      */
     public function massaction($observer)
     {
-        $block  = $observer->getEvent()->getBlock();
-        $action = $block->getRequest()->getControllerName();
-
         if (!Mage::helper('simple_relevance')->enabled()) {
             return $this;
         }
+
+        $block  = $observer->getEvent()->getBlock();
+        $action = $block->getRequest()->getControllerName();
 
         if (get_class($block) == 'Mage_Adminhtml_Block_Widget_Grid_Massaction') {
             $this->_block = $block;
@@ -60,7 +60,7 @@ class SimpleRelevance_Integration_Model_Observer
      * Send new order to SimpleRelevance API
      *
      * @param Varien_Event_Observer $observer
-     * @return void
+     * @return SimpleRelevance_Integration_Model_Observer
      */
     public function pushPurchase(Varien_Event_Observer $observer)
     {
@@ -69,21 +69,27 @@ class SimpleRelevance_Integration_Model_Observer
         }
 
         try {
+            $api_arr = array(Mage::helper('simple_relevance')->config('apikey'), Mage::helper('simple_relevance')->config('sitename'));
+            $api = Mage::getModel('simple_relevance/api', $api_arr);
 
             $orderId = (int)(Mage::getSingleton('checkout/type_onepage')->getCheckout()->getLastOrderId());
+            if (!$orderId) {
+                $orders = Mage::getModel('sales/order')->getCollection()
+                    ->setOrder('increment_id','DESC')
+                    ->setPageSize(1)
+                    ->setCurPage(1);
+                $orderId = $orders->getFirstItem()->getEntityId();
+            }
 
             if ($orderId) {
                 $order = Mage::getModel('sales/order')->load($orderId);
-                
+
                 if ($order->getId()) {
                     $purchase = Mage::getModel('simple_relevance/purchase', $order);
                     $postData = $purchase->getPostData();
 
-                    $api_arr = array(Mage::helper('simple_relevance')->config('apikey'), Mage::helper('simple_relevance')->config('sitename'));
-                    $api = Mage::getModel('simple_relevance/api', $api_arr);
-
                     foreach ($postData['items'] as $p) {
-                        $api->postPurchases($p);
+                        $api->postPurchases($p, false);
                     }
                 }
             }
@@ -101,7 +107,7 @@ class SimpleRelevance_Integration_Model_Observer
      * Automatically send customer when creating one.
      *
      * @param Varien_Event_Observer $observer
-     * @return void
+     * @return SimpleRelevance_Integration_Model_Observer or void
      */
     public function pushCustomer(Varien_Event_Observer $observer)
     {
@@ -110,17 +116,16 @@ class SimpleRelevance_Integration_Model_Observer
         }
 
         try {
-            $customer = $observer->getEvent()->getCustomer();
-
             $api_arr = array(Mage::helper('simple_relevance')->config('apikey'), Mage::helper('simple_relevance')->config('sitename'));
             $api = Mage::getModel('simple_relevance/api', $api_arr);
 
+            $customer = $observer->getEvent()->getCustomer();
             $customerData = array(
                 'email' => $customer->getEmail(),
                 'user_id' => $customer->getId(),
             );
 
-            $api->postUsers($customerData);
+            $api->postUsers($customerData, false);
         }
 
         catch (Exception $e) {
@@ -133,19 +138,18 @@ class SimpleRelevance_Integration_Model_Observer
      * Automatically send Catalog-Product when creating or modifying it.
      *
      * @param Varien_Event_Observer $observer
-     * @return void
+     * @return SimpleRelevance_Integration_Model_Observer or void
      */
     public function pushItem(Varien_Event_Observer $observer)
     {
         if (!Mage::helper('simple_relevance')->enabled()) {
-                return $this;
+            return $this;
         }
-        
-        try {
-            $product = $observer->getEvent()->getProduct();
 
+        try {
             $api_arr = array(Mage::helper('simple_relevance')->config('apikey'), Mage::helper('simple_relevance')->config('sitename'));
             $api = Mage::getModel('simple_relevance/api', $api_arr);
+            $product = $observer->getEvent()->getProduct();
             $dict = Mage::helper('simple_relevance')->getProductDict($product);
 
             // categories should be a string of ';'-separated values
@@ -163,7 +167,7 @@ class SimpleRelevance_Integration_Model_Observer
                 'data_dict' => $dict,
             );
 
-            $api->postItems($data);
+            $api->postItems($data, false);
         }
         
         catch (Exception $e) {

@@ -22,13 +22,11 @@ class SimpleRelevance_Integration_Model_Purchase
      */
     public function getPostData()
     {
-        $data = array();
-        $data['items'] = $this->getItems();
-        return $data;
+        return array('items' => $this->getItems());
     }
 
     /**
-     * Get items purchased on this order
+     * Get items purchased in this order
      *
      * @return array
      */
@@ -43,7 +41,7 @@ class SimpleRelevance_Integration_Model_Purchase
                 'item_id'     => $item->getProductId(),
                 'email'       => $this->_order->getCustomerEmail(),
                 'timestamp'   => $date,
-                'action_type' => 1
+                'action_type' => 1 // action_type 1 is a purchase in SimpleRelevance's API
             );
         }
 

@@ -47,7 +47,7 @@ class SimpleRelevance_Integration_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Return produt dict params to send to the API
+     * Return product dict params to send to the API
      *
      * @param Mage_Catalog_Model_Product
      * @return array
@@ -55,16 +55,15 @@ class SimpleRelevance_Integration_Helper_Data extends Mage_Core_Helper_Abstract
     public function getProductDict(Mage_Catalog_Model_Product $product)
     {
         $smallImageUrl = '';
-        if($product->getSmallImage()) {
+        if($product->getData('small_image') != 'no_selection' && $product->getSmallImageUrl()) {
             try {
                 $smallImageUrl = Mage::helper('catalog/image')->init($product, 'small_image')->resize(75);
             } catch(Exception $e) {
                 Mage::logException($e);
             }
         }
-
         $baseImageUrl = '';
-        if ($product->getImage()) {
+        if ($product->getData('image') != 'no_selection' && $product->getImageUrl()) {
             try {
                 $baseImageUrl = Mage::helper('catalog/image')->init($product, 'image');
             } catch(Exception $e) {
@@ -77,22 +76,21 @@ class SimpleRelevance_Integration_Helper_Data extends Mage_Core_Helper_Abstract
         $categories  = array();
         if (is_array($categoryIds) && !empty($categoryIds)) {
             foreach($categoryIds as $_catId) {
-
                 $cat = Mage::getModel('catalog/category')->load($_catId);
                 if($cat->getId()){
-                    $categories []= $cat->getName();
+                    $categories []= $cat->getData('name');
                 }
             }
         }
 
         $dict = array(
             'item_url'        => $product->getUrlPath(),
-            'price'           => $product->getPrice(),
-            'sku'             => $product->getSku(),
+            'price'           => $product->getData('price'),
+            'sku'             => $product->getData('sku'),
             'categories'      => $categories,
             'image_url_small' => (string)$smallImageUrl,
             'image_url'       => (string)$baseImageUrl,
-            'description'     => $product->getDescription(),
+            'description'     => $product->getData('description'),
         );
         return $dict;
     }
