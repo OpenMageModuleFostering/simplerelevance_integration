@@ -1,16 +1,19 @@
 {
-    "name": "OpenMageModuleFostering/SimpleRelevance_Integration",
+    "name": "OpenMageModuleFostering\/SimpleRelevance_Integration",
     "type": "magento-module",
     "license": "OSL-v3.0",
     "homepage": "",
     "description": "SimpleRelevance integration module",
     "authors": [
-    {
-        "name": "SimpleRelevance",
-        "email": "info@simplerelevance.com"
-    }
-],
+        {
+            "name": "SimpleRelevance",
+            "email": "info@simplerelevance.com"
+        }
+    ],
     "suggest": {
-        "magento-hackathon/magento-composer-installer": "*"
-    }
+        "magento-hackathon\/magento-composer-installer": "*"
+    },
+    "keywords": [
+        "openmage-module"
+    ]
 }
